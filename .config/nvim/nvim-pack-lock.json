@@ -1,0 +1,21 @@
+{
+  "plugins": {
+    "nvim-lspconfig": {
+      "rev": "a9b2fb5",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-treesitter": {
+      "rev": "738d9ced",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'main'"
+    },
+    "roslyn.nvim": {
+      "rev": "7ba2dd0",
+      "src": "https://github.com/seblyng/roslyn.nvim"
+    },
+    "rzls.nvim": {
+      "rev": "bbfe0f5",
+      "src": "https://github.com/tris203/rzls.nvim"
+    }
+  }
+}
