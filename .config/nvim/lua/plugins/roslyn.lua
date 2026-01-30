@@ -1,6 +1,7 @@
 return {
     "seblyng/roslyn.nvim",
     ft = { "cs", "razor" },
+    lazy = false,
     ---@module 'roslyn.config'
     ---@type RoslynNvimConfig
     opts = {
@@ -49,14 +50,14 @@ return {
         -- If the plugin should silence notifications about initialization
         silent = false,
     },
-    config = function()
-        require("roslyn").setup({
-            on_attach = function(client, bufnr)
-                -- 🔑 REQUIRED for demo-level highlighting
-                if client.server_capabilities.semanticTokensProvider then
-                    vim.lsp.semantic_tokens.start(bufnr, client.id)
-                end
-            end,
-        })
-    end,
+    -- config = function()
+    --     require("roslyn").setup({
+    --         on_attach = function(client, bufnr)
+    --             local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+    --             if ft == "cs" and client.server_capabilities.semanticTokensProvider then
+    --                 vim.lsp.semantic_tokens.start(bufnr, client.id)
+    --             end
+    --         end,
+    --     })
+    -- end,
 }
