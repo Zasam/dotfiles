@@ -1,6 +1,7 @@
 return {
     "seblyng/roslyn.nvim",
-    ft = { "cs", "razor" },
+    -- ft = { "cs", "razor" },
+    ft = { "cs" },
     lazy = false,
     ---@module 'roslyn.config'
     ---@type RoslynNvimConfig
