@@ -1,0 +1,28 @@
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+[pull]
+	rebase = true
+[init]
+	defaultBranch = master
+[user]
+	name = Nicklas Wagener
+	email = nicklasw@outlook.de
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[merge]
+	tool = nvimdiff
+[mergetool]
+	prompt = false
+[mergetool "vimdiff"]
+	cmd = vim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[core]
+	editor = nvim
+[mergetool "nvimdiff"]
+	cmd = nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
