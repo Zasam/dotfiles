@@ -29,9 +29,6 @@ require("lazy").setup({
         -- Syntax Highlighting
         { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
         {
-            "https://github.com/nvim-neotest/nvim-nio",
-        },
-        {
             "windwp/nvim-ts-autotag",
             dependencies = { "nvim-treesitter/nvim-treesitter" },
             config = true,
