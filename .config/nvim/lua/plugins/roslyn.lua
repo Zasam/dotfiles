@@ -1,64 +1,99 @@
+-- return {
+--     "seblyng/roslyn.nvim",
+--     ft = { "cs", "razor" },
+--     lazy = false,
+--     ---@module 'roslyn.config'
+--     ---@type RoslynNvimConfig
+--     -- opts = {
+--     -- your configuration comes here; leave empty for default settings
+--     -- "auto" | "roslyn" | "off"
+--     --
+--     -- - "auto": Does nothing for filewatching, leaving everything as default
+--     -- - "roslyn": Turns off neovim filewatching which will make roslyn do the filewatching
+--     -- - "off": Hack to turn off all filewatching. (Can be used if you notice performance issues)
+--     -- filewatching = "roslyn",
+--     --
+--     -- Optional function that takes an array of targets as the only argument. Return the target you
+--     -- want to use. If it returns `nil`, then it falls back to guessing the target like normal
+--     -- Example:
+--     --
+--     -- choose_target = function(target)
+--     --     return vim.iter(target):find(function(item)
+--     --         if string.match(item, "Foo.sln") then
+--     --             return item
+--     --         end
+--     --     end)
+--     -- end
+--     -- choose_target = nil,
+--     --
+--     -- Optional function that takes the selected target as the only argument.
+--     -- Returns a boolean of whether it should be ignored to attach to or not
+--     --
+--     -- I am for example using this to disable a solution with a lot of .NET Framework code on mac
+--     -- Example:
+--     --
+--     -- ignore_target = function(target)
+--     --     return string.match(target, "Foo.sln") ~= nil
+--     -- end
+--     -- ignore_target = nil,
+--     --
+--     -- Whether or not to look for solution files in the child of the (root).
+--     -- Set this to true if you have some projects that are not a child of the
+--     -- directory with the solution file
+--     broad_search = true,
+--     --
+--     -- Whether or not to lock the solution target after the first attach.
+--     -- This will always attach to the target in `vim.g.roslyn_nvim_selected_solution`.
+--     -- NOTE: You can use `:Roslyn target` to change the target
+--     -- lock_target = false,
+--     --
+--     -- If the plugin should silence notifications about initialization
+--     --     silent = false,
+--     -- },
+--     config = function()
+--         require("roslyn").setup({
+--             on_attach = function(client, bufnr)
+--                 -- Disable semantic tokens completely
+--                 client.server_capabilities.semanticTokensProvider = nil
+--             end,
+--             --     on_attach = function(client, bufnr)
+--             --         local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+--             --         if ft == "cs" and client.server_capabilities.semanticTokensProvider then
+--             --             vim.lsp.semantic_tokens.start(bufnr, client.id)
+--             --         end
+--             --     end,
+--         })
+--     end,
+-- }
+
 return {
     "seblyng/roslyn.nvim",
-    ft = { "cs", "razor" },
-    -- ft = { "cs" },
-    lazy = false,
-    ---@module 'roslyn.config'
-    ---@type RoslynNvimConfig
-    -- opts = {
-    -- your configuration comes here; leave empty for default settings
-    -- "auto" | "roslyn" | "off"
-    --
-    -- - "auto": Does nothing for filewatching, leaving everything as default
-    -- - "roslyn": Turns off neovim filewatching which will make roslyn do the filewatching
-    -- - "off": Hack to turn off all filewatching. (Can be used if you notice performance issues)
-    -- filewatching = "roslyn",
-    --
-    -- Optional function that takes an array of targets as the only argument. Return the target you
-    -- want to use. If it returns `nil`, then it falls back to guessing the target like normal
-    -- Example:
-    --
-    -- choose_target = function(target)
-    --     return vim.iter(target):find(function(item)
-    --         if string.match(item, "Foo.sln") then
-    --             return item
-    --         end
-    --     end)
-    -- end
-    -- choose_target = nil,
-    --
-    -- Optional function that takes the selected target as the only argument.
-    -- Returns a boolean of whether it should be ignored to attach to or not
-    --
-    -- I am for example using this to disable a solution with a lot of .NET Framework code on mac
-    -- Example:
-    --
-    -- ignore_target = function(target)
-    --     return string.match(target, "Foo.sln") ~= nil
-    -- end
-    -- ignore_target = nil,
-    --
-    -- Whether or not to look for solution files in the child of the (root).
-    -- Set this to true if you have some projects that are not a child of the
-    -- directory with the solution file
-    -- broad_search = false,
-    --
-    -- Whether or not to lock the solution target after the first attach.
-    -- This will always attach to the target in `vim.g.roslyn_nvim_selected_solution`.
-    -- NOTE: You can use `:Roslyn target` to change the target
-    -- lock_target = false,
-    --
-    -- If the plugin should silence notifications about initialization
-    --     silent = false,
-    -- },
-    -- config = function()
-    --     require("roslyn").setup({
-    --         on_attach = function(client, bufnr)
-    --             local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-    --             if ft == "cs" and client.server_capabilities.semanticTokensProvider then
-    --                 vim.lsp.semantic_tokens.start(bufnr, client.id)
-    --             end
-    --         end,
-    --     })
-    -- end,
+    ft = { "cs", "razor" }, -- Re-enable razor here
+    config = function()
+        local mason_standard_path = vim.fn.stdpath("data") .. "/mason/packages/roslyn/libexec"
+
+        require("roslyn").setup({
+            -- Point to the actual executable
+            exe = {
+                "dotnet",
+                vim.fs.joinpath(mason_standard_path, "Microsoft.CodeAnalysis.LanguageServer.dll"),
+            },
+            args = {
+                "--logLevel=Information",
+                "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+            },
+            -- This is where the Razor magic happens
+            razor_plugin_path = vim.fs.joinpath(mason_standard_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
+            on_attach = function(client, bufnr)
+                -- Disable semantic tokens if they cause lag
+                client.server_capabilities.semanticTokensProvider = nil
+
+                -- Standard LSP Keymaps
+                local opts = { buffer = bufnr, remap = false }
+                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+                vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+            end,
+        })
+    end,
 }
