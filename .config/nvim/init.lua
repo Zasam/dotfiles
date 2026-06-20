@@ -6,7 +6,6 @@ vim.g.mapleader = " "
 -- Basic editor options
 local opt = vim.opt
 opt.number = true
-opt.relativenumber = true
 opt.cursorline = true
 opt.scrolloff = 10
 opt.list = true
@@ -56,37 +55,6 @@ vim.filetype.add({
     },
 })
 
--- =========================
--- LAZY CONFIGURATION
--- =========================
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable",
-        lazypath,
-    })
-end
+vim.opt.updatetime = 300
 
-vim.opt.rtp:prepend(lazypath)
 require("config.lazy")
-
-require("mason").setup({
-    registries = {
-        "github:mason-org/mason-registry",
-        "github:Crashdummyy/mason-registry",
-    },
-})
--- =========================
--- CONFORM (FORMATTING)
--- =========================
-require("conform").setup({
-    formatters_by_ft = {
-        razor = { "prettier", "csharpier" },
-        html = { "prettier" },
-        cs = { "prettier" },
-    },
-})
