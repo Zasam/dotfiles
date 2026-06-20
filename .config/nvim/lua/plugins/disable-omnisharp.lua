@@ -3,16 +3,23 @@ return {
         "neovim/nvim-lspconfig",
         opts = {
             servers = {
-                omnisharp = false, -- <- Disable omnisharp
+                omnisharp = false,
+            },
+        },
+    },
+    {
+        "mason-org/mason.nvim",
+        opts = {
+            registries = {
+                "github:mason-org/mason-registry",
+                "github:Crashdummyy/mason-registry",
             },
         },
     },
     {
         "mason-org/mason-lspconfig.nvim",
         opts = {
-            ensure_installed = {
-                -- DO NOT include "omnisharp"
-            },
+            ensure_installed = {},
             automatic_installation = false,
         },
     },
