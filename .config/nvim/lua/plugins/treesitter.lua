@@ -1,10 +1,11 @@
--- ~/.config/nvim/lua/plugins/treesitter.lua
 return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
+    -- Main config goes here
+    main = "nvim-treesitter.configs",
     opts = {
-        ensure_installed = { "c_sharp", "razor", "html" },
+        ensure_installed = { "rust", "toml", "ron", "c_sharp", "razor", "html", "lua", "vim", "vimdoc" },
         auto_install = true,
         highlight = {
             enable = true,
