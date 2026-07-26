@@ -1,0 +1,251 @@
+[
+  // Main bar - DP-3 (primary monitor): full widget set
+  {
+    "output": "DP-3",
+    "reload_style_on_change": true,
+    "layer": "top",
+    "position": "top",
+    "spacing": 0,
+    "height": 40,
+    "modules-left": [
+      "custom/omarchy",
+      "hyprland/workspaces",
+      "custom/pomodoro",
+      "custom/project"
+    ],
+    "modules-center": [
+      "clock",
+      "custom/weather"
+    ],
+    "modules-right": [
+      "group/focus",
+      "custom/habits",
+      "custom/updates",
+      "network",
+      "cpu",
+      "memory",
+      "pulseaudio",
+      "custom/media",
+      "custom/servers"
+    ],
+    "hyprland/workspaces": {
+      "on-click": "activate",
+      "format": "{icon}",
+      "format-icons": {
+        "default": "",
+        "1": "M1",
+        "2": "M2",
+        "3": "M3",
+        "4": "L1",
+        "5": "L2",
+        "6": "L3",
+        "7": "T1",
+        "8": "T2",
+        "active": "󱓻"
+      },
+      "persistent-workspaces": {
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": []
+      },
+      "all-outputs": false
+    },
+    "custom/omarchy": {
+      "format": "<span font='omarchy'></span>",
+      "on-click": "omarchy-menu",
+      "on-click-right": "xdg-terminal-exec",
+      "tooltip-format": "Omarchy Menu\n\nSuper + Alt + Space"
+    },
+    "clock": {
+      "format": "{:%d.%m %H:%M:%S}",
+      "format-alt": "{:%A, %d.%m.%Y W%V}",
+      "interval": 1,
+      "tooltip": false,
+      "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
+    },
+    "custom/weather": {
+      "exec": "~/.config/waybar/scripts/weather.sh",
+      "interval": 600,
+      "format": "{}"
+    },
+    "custom/project": {
+      "exec": "~/.config/waybar/scripts/project.sh",
+      "return-type": "json",
+      "interval": 5,
+      "format": "{}",
+      "on-click": "~/.config/waybar/scripts/project-click.sh"
+    },
+    "custom/media": {
+      "exec": "~/.config/waybar/scripts/media.sh",
+      "return-type": "json",
+      "interval": 3,
+      "format": "{}",
+      "on-click": "playerctl play-pause",
+      "on-click-right": "playerctl next",
+      "on-scroll-up": "playerctl next",
+      "on-scroll-down": "playerctl previous"
+    },
+    "custom/pomodoro": {
+      "exec": "~/.config/waybar/scripts/pomodoro.sh",
+      "return-type": "json",
+      "interval": 1,
+      "signal": 8,
+      "format": "{}",
+      "on-click": "~/.config/waybar/scripts/pomodoro-toggle.sh",
+      "on-click-right": "~/.config/waybar/scripts/pomodoro-reset.sh"
+    },
+    "group/focus": {
+      "orientation": "horizontal",
+      "modules": [
+        "custom/focus-lock",
+        "custom/focus-now",
+        "custom/focus-usage"
+      ]
+    },
+    "custom/focus-lock": {
+      "exec": "~/.config/waybar/scripts/focus-lock.sh",
+      "return-type": "json",
+      "interval": 15,
+      "format": "{}",
+      "on-click": "xdg-open http://192.168.178.40:3000/#focus 2>/dev/null || true"
+    },
+    "custom/focus-now": {
+      "exec": "~/.config/waybar/scripts/focus-now.sh",
+      "return-type": "json",
+      "interval": 10,
+      "format": "{}",
+      "escape": true
+    },
+    "custom/focus-usage": {
+      "exec": "~/.config/waybar/scripts/focus-usage.sh",
+      "return-type": "json",
+      "interval": 30,
+      "format": "{}"
+    },
+    "custom/habits": {
+      "exec": "~/.config/waybar/scripts/habits.sh",
+      "return-type": "json",
+      "interval": 30,
+      "format": "{}",
+      "on-click": "xdg-open http://192.168.178.40:3000/#planning 2>/dev/null || true"
+    },
+    "custom/updates": {
+      "exec": "~/.config/waybar/scripts/updates.sh",
+      "return-type": "json",
+      "interval": 3600,
+      "format": "{}",
+      "on-click": "xdg-terminal-exec bash -c 'yay; exec bash'"
+    },
+    "custom/servers": {
+      "exec": "~/.config/waybar/scripts/servers.sh",
+      "return-type": "json",
+      "interval": 60,
+      "format": "{}",
+      "on-click": "~/.config/waybar/scripts/servers-click.sh"
+    },
+    "cpu": {
+      "interval": 5,
+      "format": " {usage}%",
+      "tooltip-format": "CPU Load: {usage}%",
+      "on-click": "omarchy-launch-or-focus-tui btop"
+    },
+    "memory": {
+      "interval": 5,
+      "format": " {used}G",
+      "tooltip-format": "{used} GiB / {total} GiB ({percentage}%)",
+      "on-click": "omarchy-launch-or-focus-tui btop"
+    },
+    "network": {
+      "format-icons": [
+        "󰤯",
+        "󰤟",
+        "󰤢",
+        "󰤥",
+        "󰤨"
+      ],
+      "format": "{icon}",
+      "format-wifi": "{icon}",
+      "format-ethernet": "󰀂",
+      "format-disconnected": "󰤮",
+      "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes} ⇡{bandwidthUpBytes}",
+      "tooltip-format-ethernet": "⇣{bandwidthDownBytes} ⇡{bandwidthUpBytes}",
+      "tooltip-format-disconnected": "Disconnected",
+      "interval": 3,
+      "spacing": 1,
+      "on-click": "omarchy-launch-wifi"
+    },
+    "pulseaudio": {
+      "format": "{icon}",
+      "on-click": "omarchy-launch-audio",
+      "on-click-right": "pamixer -t",
+      "tooltip-format": "Volume: {volume}%",
+      "scroll-step": 5,
+      "format-muted": "",
+      "format-icons": {
+        "headphone": "",
+        "headset": "",
+        "default": [
+          "",
+          "",
+          ""
+        ]
+      }
+    }
+  },
+
+  // Secondary bar - DP-2 (right monitor) and HDMI-A-1 (TV): workspaces + clock only,
+  // no duplicated system stats / Atlas widgets / tray
+  {
+    "output": ["DP-2", "HDMI-A-1"],
+    "layer": "top",
+    "position": "top",
+    "spacing": 0,
+    "height": 40,
+    "modules-left": [
+      "hyprland/workspaces"
+    ],
+    "modules-center": [
+      "clock"
+    ],
+    "modules-right": [],
+    "hyprland/workspaces": {
+      "on-click": "activate",
+      "format": "{icon}",
+      "format-icons": {
+        "default": "",
+        "1": "M1",
+        "2": "M2",
+        "3": "M3",
+        "4": "L1",
+        "5": "L2",
+        "6": "L3",
+        "7": "T1",
+        "8": "T2",
+        "active": "󱓻"
+      },
+      "persistent-workspaces": {
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": []
+      },
+      "all-outputs": false
+    },
+    "clock": {
+      "format": "{:%d.%m %H:%M:%S}",
+      "format-alt": "{:%A, %d.%m.%Y W%V}",
+      "interval": 1,
+      "tooltip": false,
+      "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
+    }
+  }
+]
