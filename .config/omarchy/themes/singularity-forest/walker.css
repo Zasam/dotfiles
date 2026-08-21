@@ -1,0 +1,23 @@
+@define-color selected-text #C8E967;
+@define-color selected-box #C8E967;
+@define-color text #37B37E;
+@define-color base #0B1710;
+@define-color border #1D5C34;
+@define-color foreground #0B1710;
+@define-color background #0B1710;
+
+/* Bump: selected item nudges right with a tinted background fade-in */
+child:selected {
+  border-radius: 10px;
+  background-color: alpha(@selected-box, 0.15);
+  transition: background-color 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+child:selected .item-box {
+  transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(6px);
+}
+
+child:selected .item-box * {
+  color: @selected-text;
+}
