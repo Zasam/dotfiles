@@ -78,6 +78,7 @@ tooltip {
 #custom-media,
 #custom-pomodoro,
 #custom-habits,
+#custom-kdeconnect,
 #custom-updates,
 #custom-servers {
   padding: 5px;
@@ -107,6 +108,12 @@ tooltip {
 #custom-habits.complete { color: #a6e3a1; }
 #custom-habits.partial  { color: #fab387; }
 #custom-habits.none     { color: @foreground; opacity: 0.6; }
+
+/* KDE Connect (paired phone) */
+#custom-kdeconnect.connected    { opacity: 0.7; }
+#custom-kdeconnect.charging     { color: #a6e3a1; }
+#custom-kdeconnect.low          { color: #f38ba8; }
+#custom-kdeconnect.disconnected { opacity: 0.4; }
 
 /* Pomodoro */
 #custom-pomodoro.work   { color: #f38ba8; }
