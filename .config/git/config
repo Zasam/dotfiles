@@ -18,11 +18,21 @@
 	helper = !/usr/bin/gh auth git-credential
 [merge]
 	tool = nvimdiff
+	conflictstyle = zdiff3
 [mergetool]
 	prompt = false
 [mergetool "vimdiff"]
 	cmd = vim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [core]
 	editor = nvim
+	pager = delta
 [mergetool "nvimdiff"]
 	cmd = nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	dark = true
+	line-numbers = true
+[diff]
+	colorMoved = default
