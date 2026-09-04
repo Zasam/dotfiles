@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-STATE_FILE="$HOME/.cache/waybar-pomodoro"
+STATE_FILE="$HOME/.cache/omarchy-pomodoro"
 WORK_SECS=1500   # 25 min
 SHORT_SECS=300   #  5 min
 LONG_SECS=900    # 15 min
@@ -31,16 +31,19 @@ case "$STATE" in
                 NEW_SESSIONS=$((SESSIONS + 1))
                 notify-send -u normal "Pomodoro" "Work session done! Time for a break." 2>/dev/null || true
                 printf 'STATE=done_work\nEND_EPOCH=0\nREMAINING=0\nSESSIONS=%d\n' "$NEW_SESSIONS" > "$STATE_FILE"
-                printf '{"text":" Done!","tooltip":"Session %d complete. Click to start break.","class":"done"}\n' "$NEW_SESSIONS"
+                printf '{"text":" Done!","tooltip":"Session %d complete. Click to start break.","class":"active"}\n' "$NEW_SESSIONS"
             else
                 notify-send -u normal "Pomodoro" "Break over! Ready to focus?" 2>/dev/null || true
                 printf 'STATE=done_break\nEND_EPOCH=0\nREMAINING=0\nSESSIONS=%d\n' "${SESSIONS:-0}" > "$STATE_FILE"
-                printf '{"text":" Ready","tooltip":"Break done. Click to start work.","class":"done"}\n'
+                printf '{"text":" Ready","tooltip":"Break done. Click to start work.","class":"active"}\n'
             fi
         else
             TIME=$(fmt_time "$REMAINING")
             if [ "$STATE" = "work" ]; then
-                printf '{"text":" %s","tooltip":"Pomodoro — session %d\\nClick to pause","class":"work"}\n' "$TIME" "${SESSIONS:-0}"
+                # class:"active" highlights the widget while a work session is running —
+                # the bar's command modules only special-case the literal string "active",
+                # unlike old waybar's per-class CSS colors (work/break/paused/done).
+                printf '{"text":" %s","tooltip":"Pomodoro — session %d\\nClick to pause","class":"active"}\n' "$TIME" "${SESSIONS:-0}"
             else
                 printf '{"text":" %s","tooltip":"Break time\\nClick to pause","class":"break"}\n' "$TIME"
             fi
@@ -56,10 +59,10 @@ case "$STATE" in
         fi
         ;;
     done_work)
-        printf '{"text":" Done!","tooltip":"Session %d complete. Click to start break.","class":"done"}\n' "${SESSIONS:-0}"
+        printf '{"text":" Done!","tooltip":"Session %d complete. Click to start break.","class":"active"}\n' "${SESSIONS:-0}"
         ;;
     done_break)
-        printf '{"text":" Ready","tooltip":"Break done. Click to start work.","class":"done"}\n'
+        printf '{"text":" Ready","tooltip":"Break done. Click to start work.","class":"active"}\n'
         ;;
     *)
         printf '{"text":" ","tooltip":"Click to start Pomodoro","class":"idle"}\n'

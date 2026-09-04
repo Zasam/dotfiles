@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Shared helpers for the custom/focus-* waybar modules — all three surface data collected
-# by atlas-focus-agent (running on this machine) via Atlas's Focus module API.
+# Shared helpers for the focus-* bar modules — all three surface data collected by
+# atlas-focus-agent (running on this machine) via Atlas's Focus module API.
 _FOCUS_COMMON_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=atlas-env.sh
 source "$_FOCUS_COMMON_DIR/atlas-env.sh"
@@ -16,8 +16,10 @@ fmt_duration() {
     fi
 }
 
-# Safely package text/tooltip/class into the JSON waybar expects — jq's --arg handles
-# quote/newline escaping, so callers can build tooltips with plain multi-line bash strings.
+# Safely package text/tooltip/class into the JSON the bar's command modules expect —
+# jq's --arg handles quote/newline escaping, so callers can build tooltips with plain
+# multi-line bash strings. Only class:"active" is visually distinguished by the bar
+# (bold/highlighted), so callers pick "active" deliberately when a block/state is live.
 emit() {
     jq -cn --arg text "$1" --arg tooltip "$2" --arg class "$3" '{text:$text, tooltip:$tooltip, class:$class}'
 }

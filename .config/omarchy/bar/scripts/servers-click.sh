@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CACHE="$HOME/.cache/waybar-servers"
+CACHE="$HOME/.cache/omarchy-servers"
 
 # If no cache yet, fall back to static list
 if [ ! -f "$CACHE" ]; then

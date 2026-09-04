@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-STATE_FILE="$HOME/.cache/waybar-pomodoro"
+STATE_FILE="$HOME/.cache/omarchy-pomodoro"
 WORK_SECS=1500
 SHORT_SECS=300
 LONG_SECS=900
@@ -38,4 +38,5 @@ case "$STATE" in
         ;;
 esac
 
-pkill -RTMIN+8 waybar 2>/dev/null || true
+# No signal-based force-refresh needed (waybar's pkill -RTMIN+8 trick) — pomodoro.sh
+# polls every 1s, so the next tick shows the new state with no perceptible delay.

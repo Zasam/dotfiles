@@ -28,6 +28,23 @@
         },
         {
           "id": "omarchy.workspaces"
+        },
+        {
+          "id": "pomodoro",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/pomodoro.sh",
+          "interval": 1,
+          "onClick": "~/.config/omarchy/bar/scripts/pomodoro-toggle.sh",
+          "onRightClick": "~/.config/omarchy/bar/scripts/pomodoro-reset.sh",
+          "tooltip": "Pomodoro"
+        },
+        {
+          "id": "project",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/project.sh",
+          "interval": 5,
+          "onClick": "~/.config/omarchy/bar/scripts/project-click.sh",
+          "tooltip": "Current project"
         }
       ],
       "right": [
@@ -38,6 +55,61 @@
           "id": "omarchy.agents"
         },
         {
+          "id": "focus-lock",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/focus-lock.sh",
+          "interval": 15,
+          "onClick": "xdg-open http://192.168.178.40:3000/#focus 2>/dev/null || true",
+          "tooltip": "Focus blocks"
+        },
+        {
+          "id": "focus-now",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/focus-now.sh",
+          "interval": 10,
+          "tooltip": "Currently focused"
+        },
+        {
+          "id": "focus-usage",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/focus-usage.sh",
+          "interval": 30,
+          "tooltip": "Screen time today"
+        },
+        {
+          "id": "habits",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/habits.sh",
+          "interval": 30,
+          "onClick": "xdg-open http://192.168.178.40:3000/#planning 2>/dev/null || true",
+          "tooltip": "Habits due today"
+        },
+        {
+          "id": "kdeconnect",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/kdeconnect.sh",
+          "interval": 30,
+          "onClick": "kdeconnect-app",
+          "onRightClick": "kdeconnect-cli --ping",
+          "tooltip": "Phone"
+        },
+        {
+          "id": "resources",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/resources.sh",
+          "interval": 5,
+          "onClick": "omarchy-launch-or-focus-tui btop",
+          "tooltip": "CPU / RAM"
+        },
+        {
+          "id": "servers",
+          "type": "command",
+          "exec": "~/.config/omarchy/bar/scripts/servers.sh",
+          "interval": 60,
+          "onClick": "~/.config/omarchy/bar/scripts/servers-click.sh",
+          "tooltip": "Servers"
+        },
+        {
           "id": "omarchy.bluetooth"
         },
         {
@@ -45,6 +117,9 @@
         },
         {
           "id": "omarchy.audio"
+        },
+        {
+          "id": "omarchy.media"
         },
         {
           "id": "omarchy.monitor"

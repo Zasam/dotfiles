@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# custom/focus-now — currently-focused window/site, from atlas-focus-agent's hyprctl-based
+# focus-now — currently-focused window/site, from atlas-focus-agent's hyprctl-based
 # usage sampler (Focus module's usage/live endpoint, ~10s sample cadence). Tooltip also folds
 # in today's per-program usage breakdown (usage/daily), so hovering the active-program
 # indicator doubles as an at-a-glance "what have I used today, and for how long" view.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# custom/focus-usage — today's total window-focused screen time, aggregated by
+# focus-usage — today's total window-focused screen time, aggregated by
 # atlas-focus-agent's usage sampler (Focus module's usage/daily endpoint).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=focus-common.sh
