@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# custom/focus-lock — active Focus-module commitment blocks: apps enforced locally by
+# focus-lock — active Focus-module commitment blocks: apps enforced locally by
 # atlas-focus-agent, domains enforced via Pi-hole. Shows a countdown to when the last
 # active block clears; ∞ while a permanent block is still waiting on request-unlock.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -55,8 +55,11 @@ while IFS=$'\t' read -r NAME KIND UNLOCK_AT; do
     TOOLTIP="${TOOLTIP:+$TOOLTIP$'\n'}$LINE"
 done <<< "$LINES"
 
+# Both branches use class "active" (not a distinct "forever" class) — the bar's command
+# module only highlights the literal string "active", so this is what makes a live block
+# actually stand out, unlike the old waybar CSS which could style "forever" separately.
 if [ "$HAS_FOREVER" -eq 1 ]; then
-    emit "🔒 ∞" "$TOOLTIP" "forever"
+    emit "🔒 ∞" "$TOOLTIP" "active"
 elif [ "$COUNT" -gt 1 ]; then
     emit "🔒 ($COUNT) $(fmt_duration "$MAX_REMAINING")" "$TOOLTIP" "active"
 else

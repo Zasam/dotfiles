@@ -12,7 +12,7 @@ URLS=( "http://192.168.178.40:8123"
        "http://192.168.178.41"
        "$ATLAS_URL" )
 
-CACHE="$HOME/.cache/waybar-servers"
+CACHE="$HOME/.cache/omarchy-servers"
 TMPDIR=$(mktemp -d)
 trap 'rm -rf "$TMPDIR"' EXIT
 

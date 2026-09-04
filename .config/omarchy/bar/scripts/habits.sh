@@ -32,7 +32,7 @@ OUT=$(jq -c --argjson dow "$TODAY_DOW" --argjson dom "$TODAY_DOM" --argjson mont
       {
         text: (" \($done)/\($total)"),
         tooltip: $tooltip,
-        class: (if $done >= $total then "complete" elif $done == 0 then "none" else "partial" end)
+        class: (if $done >= $total then "active" else "none" end)
       }
     end
 ' <<< "$RESP" 2>/dev/null)
