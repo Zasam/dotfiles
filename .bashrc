@@ -43,22 +43,33 @@ alias bp-linux64='dotnet publish -r '
 alias cr='cargo run'
 
 # EXPORTS
-export DOTNET_ROOT=$HOME/.local/share/mise/installs/dotnet/latest
-export PATH=$DOTNET_ROOT:$PATH
-export PATH="$PATH:$HOME/.dotnet/tools"
-export TESSDATA_PREFIX=/home/nicklas/data/ocr
+if [ -d "$HOME/.local/share/mise/installs/dotnet/latest" ]; then
+  export DOTNET_ROOT=$HOME/.local/share/mise/installs/dotnet/latest
+  export PATH=$DOTNET_ROOT:$PATH
+fi
+[ -d "$HOME/.dotnet/tools" ] && export PATH="$PATH:$HOME/.dotnet/tools"
+[ -d /home/nicklas/data/ocr ] && export TESSDATA_PREFIX=/home/nicklas/data/ocr
 export LIBGL_ALWAYS_SOFTWARE=1
 export WEBKIT_DISABLE_DMABUF_RENDERER=1
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/build-tools/36.0.0
+if [ -d "$HOME/Android/Sdk" ]; then
+  export ANDROID_HOME=$HOME/Android/Sdk
+  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+  export PATH=$PATH:$ANDROID_HOME/platform-tools
+  export PATH=$PATH:$ANDROID_HOME/emulator
+  export PATH=$PATH:$ANDROID_HOME/build-tools/36.0.0
+fi
 export PATH="$HOME/.cargo/bin:$PATH"
 export HA_URL=http://192.168.178.40:8123
 
+# fzf fuzzy Ctrl-R (history) / Ctrl-T (files) / Alt-C (cd)
+[ -f /usr/share/fzf/key-bindings.bash ] && source /usr/share/fzf/key-bindings.bash
+[ -f /usr/share/fzf/completion.bash ] && source /usr/share/fzf/completion.bash
+
 # Secrets (NUGET_API_KEY, HA_TOKEN, ...) live outside version control
 [ -f "$HOME/.bash_secrets" ] && source "$HOME/.bash_secrets"
+
+# Machine-local overrides that shouldn't apply to every machine in the dotfiles repo
+[ -f "$HOME/.bashrc.local" ] && source "$HOME/.bashrc.local"
 
 fcd() {
   local dir
