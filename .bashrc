@@ -21,7 +21,7 @@ source "$OMARCHY_PATH/default/bash/rc"
 
 # ALIASES
 # - General
-alias dev='/home/nicklas/Dev'
+alias dev='cd ~/dev'
 alias data='/home/nicklas/Data'
 alias files='xdg-open .'
 alias dot='/usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
@@ -82,6 +82,6 @@ atlas-deploy() {
 }
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+command -v ng &>/dev/null && source <(ng completion script)
 
-. "$HOME/.local/share/../bin/env"
+[ -f "$HOME/.local/share/../bin/env" ] && . "$HOME/.local/share/../bin/env"
