@@ -26,18 +26,22 @@ alias data='/home/nicklas/Data'
 alias files='xdg-open .'
 alias dot='/usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
 if [ -f /usr/share/bash-completion/completions/git ]; then
-    source /usr/share/bash-completion/completions/git
-    __git_complete dot _git
+  source /usr/share/bash-completion/completions/git
+  __git_complete dot _git
 fi
 
 # - Neovim
 alias vim='nvim'
+
+# - Terminal multiplexer (zellij instead of tmux; use `command tmux` for the real thing)
+alias tmux='zellij'
 
 # - Dotnet
 alias dr='dotnet run'
 alias dw='dotnet watch run'
 alias db='dotnet build'
 alias bp-linux64='dotnet publish -r '
+alias lg='lazygit'
 
 # Rust
 alias cr='cargo run'
@@ -50,6 +54,11 @@ export TESSDATA_PREFIX=/home/nicklas/data/ocr
 export LIBGL_ALWAYS_SOFTWARE=1
 export WEBKIT_DISABLE_DMABUF_RENDERER=1
 export ANDROID_HOME=$HOME/Android/Sdk
+# /etc/profile.d/android-sdk*.sh (system-wide, from a separate SDK install at
+# /opt/android-sdk) also export ANDROID_SDK_ROOT — pointing it at a different
+# path than ANDROID_HOME makes Gradle refuse to build. Force it to match the
+# SDK that actually has the emulator/system images.
+export ANDROID_SDK_ROOT=$ANDROID_HOME
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:$ANDROID_HOME/emulator
@@ -72,16 +81,20 @@ track_project_dir() {
 
 trap 'track_project_dir' DEBUG
 
+alias sshadd='ssh-add ~/.ssh/id_ed25519'
+
 # Atlas
 agent-deploy() {
   /home/nicklas/dev/ATLAS/agent/deploy.sh
 }
 
 atlas-deploy() {
-  (cd /home/nicklas/dev/ATLAS && bash deploy.sh)
+  (cd /home/nicklas/dev/ATLAS/atlas && bash deploy.sh)
 }
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
 
 . "$HOME/.local/share/../bin/env"
+
+alias q=exit
