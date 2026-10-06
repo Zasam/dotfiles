@@ -6,6 +6,21 @@ not coding standards, and grows independently:
 
 @PREFERENCES.md
 
+## Global To-Dos
+
+Cross-project/machine-setup items left over from a session — not tied to any one repo —
+live in `TODO.md`, checked and updated as they're picked up or completed:
+
+@TODO.md
+
+## Home Network Knowledge Base
+
+Running history/reference for this machine's and other local network devices' setup
+(DNS, DHCP, router, Pi-hole, etc.) and changes made to them — kept as an append-only log
+so troubleshooting knowledge accumulates across sessions instead of being rediscovered:
+
+@NETWORK.md
+
 # Engineering Standards for New Projects
 
 Goal: any project should be in a state where another engineer can step in and work on it without a guided tour.
@@ -25,6 +40,17 @@ Test core logic and bug fixes where practical (no hard coverage target). A chang
 - Small, atomic commits explaining why, not just what.
 - Never commit secrets — use gitignored `.env` + a committed `.env.example` (keys, no values).
 - Once a project has real users/releases: maintain CHANGELOG.md and semver (MAJOR.MINOR.PATCH) tags.
+- **Work in a dedicated git worktree, never directly on `main`/`master`.** This comes from
+  a real incident (ATLAS repo, 2026-09-23): two agent sessions worked on `main`
+  simultaneously with no worktrees, and reconciling their changes at commit time turned
+  into painstaking file-by-file untangling. At the start of a session — or as soon as any
+  code change is about to happen — create a new worktree/branch and do all work there;
+  stay in that one worktree for the rest of the session rather than hopping between
+  worktrees/branches (that's previously left this machine's checkouts in a tangled state
+  — stray checked-out branches, confusion about which worktree has which change). Once the
+  work is complete (committed, merged/PR'd if that's the plan), suggest the worktree be
+  removed (`git worktree remove <path>`) rather than removing it unilaterally. `main` stays
+  reserved for the user's own manual work.
 
 ## 5. Security & Configuration
 - No hardcoded credentials/keys/tokens; env-specific values (URLs, ports, etc.) come from config/env vars.
