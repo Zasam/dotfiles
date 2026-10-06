@@ -12,6 +12,6 @@ export PATH="$PATH:/home/nicklas/.local/share/JetBrains/Toolbox/scripts"
 # Only prompt for the passphrase when there's a real terminal attached —
 # headless/non-interactive shells (e.g. tool-driven subshells) have no tty
 # and no working SSH_ASKPASS, so keychain/ssh-add would just fail noisily.
-[ -t 0 ] && eval $(keychain --quiet --eval id_ed25519)
+[[ $- == *i* ]] && [ -t 0 ] && eval $(keychain --quiet --eval id_ed25519)
 
 . "$HOME/.local/share/../bin/env"
