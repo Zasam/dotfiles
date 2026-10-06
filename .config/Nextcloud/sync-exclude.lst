@@ -1,0 +1,70 @@
+# This file contains fixed global exclude patterns
+
+*~
+~$*
+.~lock.*
+~*.tmp
+]*.~*
+]Icon\r*
+].DS_Store
+].ds_store
+*.textClipping
+._*
+]Thumbs.db
+]photothumb.db
+System Volume Information
+
+.*.sw?
+.*.*sw?
+
+].TemporaryItems
+].Trashes
+].DocumentRevisions-V100
+].Trash-*
+.fseventd
+.apdisk
+.Spotlight-V100
+
+.directory
+
+*.part
+*.filepart
+*.crdownload
+
+*.kate-swp
+*.gnucash.tmp-*
+
+.synkron.*
+.sync.ffs_db
+.symform
+.symform-store
+.fuse_hidden*
+*.unison
+.nfs*
+
+# (default) metadata files created by Syncthing
+.stfolder
+.stignore
+.stversions
+
+My Saved Places.
+
+
+*.sb-*
+
+# Dev build output / dependencies / tooling state — regenerable, and hundreds of
+# thousands of tiny files each; syncing them pinned the Pi5's CPU for two days
+# (2026-10-04..06). A trailing "/" matches directories only, at any depth.
+node_modules/
+.git/
+obj/
+.vs/
+.idea/
+.gradle/
+.dart_tool/
+__pycache__/
+.venv/
+.next/
+.nuxt/
+.angular/
+.parcel-cache/
