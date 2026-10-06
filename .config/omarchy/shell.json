@@ -130,11 +130,11 @@
       ]
     },
     "position": "top",
-    "transparent": false
+    "transparent": true
   },
   "idle": {
-    "lock": 300,
-    "screensaver": 150
+    "lock": 1800,
+    "screensaver": 900
   },
   "plugins": [],
   "version": 1
