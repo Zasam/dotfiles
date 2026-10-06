@@ -26,4 +26,16 @@ require("hypr.autostart")
 require("default.hypr.toggles")
 
 -- Add any other personal Hyprland configuration below.
--- o.window("qemu", { workspace = "5" })
+
+-- Android emulator (scripts/run boots it for `npx expo run:android`): float
+-- instead of tiling, sized as a share of monitor height so it reads as a
+-- phone on anything from the 1080p Samsung to the 4K AOC. WM_CLASS is
+-- "Emulator" (confirmed live, not "qemu" as originally guessed below) —
+-- title-match it too so this doesn't also grab the small floating toolbar
+-- window the emulator opens alongside it (same class, title "Emulator").
+o.window({ class = "^Emulator$", title = "^Android Emulator" }, {
+  float = true,
+  center = true,
+  size = { "(monitor_h*9/25)", "(monitor_h*4/5)" },
+  keep_aspect_ratio = true,
+})
