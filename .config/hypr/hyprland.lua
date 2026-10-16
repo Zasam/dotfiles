@@ -39,3 +39,13 @@ o.window({ class = "^Emulator$", title = "^Android Emulator" }, {
   size = { "(monitor_h*9/25)", "(monitor_h*4/5)" },
   keep_aspect_ratio = true,
 })
+
+-- Machine-local overrides (untracked ~/.config/hypr/local.lua, like ~/.bashrc.local): e.g. a
+-- laptop's own panel and input settings. Loaded last so it wins; a missing file is fine, an
+-- error inside it is not.
+do
+  local ok, err = pcall(require, "hypr.local")
+  if not ok and not tostring(err):find("module 'hypr.local' not found", 1, true) then
+    error(err)
+  end
+end
