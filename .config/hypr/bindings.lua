@@ -27,3 +27,9 @@
 -- o.bind("SUPER + SHIFT + S", nil, "omarchy-capture-screenshot")
 -- o.bind("SUPER + H", nil, "voxtype record toggle")
 -- o.bind("SUPER + PERIOD", nil, "omarchy-shell shell toggle omarchy.emojis")
+
+-- Manual override for the voice assistant (linux-voice-assistant), for when a
+-- misheard wake word leaves it stuck listening/thinking with no voice command
+-- that can reach it. See ~/dev/projects/voice-assistant/scripts/lva-control.py.
+o.bind("SUPER + SHIFT + V", "Stop voice pipeline", "~/dev/projects/voice-assistant/scripts/lva-control.py stop")
+o.bind("SUPER + ALT + V", "Start voice pipeline", "~/dev/projects/voice-assistant/scripts/lva-control.py start")

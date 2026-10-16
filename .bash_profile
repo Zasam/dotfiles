@@ -14,4 +14,4 @@ export PATH="$PATH:/home/nicklas/.local/share/JetBrains/Toolbox/scripts"
 # and no working SSH_ASKPASS, so keychain/ssh-add would just fail noisily.
 [[ $- == *i* ]] && [ -t 0 ] && eval $(keychain --quiet --eval id_ed25519)
 
-. "$HOME/.local/share/../bin/env"
+[ -f "$HOME/.local/share/../bin/env" ] && . "$HOME/.local/share/../bin/env"
