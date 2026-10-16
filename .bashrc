@@ -21,7 +21,7 @@ source "$OMARCHY_PATH/default/bash/rc"
 
 # ALIASES
 # - General
-alias dev='cd ~/dev'
+alias dev='cd ~/dev/projects'
 alias data='/home/nicklas/Data'
 alias files='xdg-open .'
 alias dot='/usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
@@ -92,15 +92,27 @@ track_project_dir() {
 
 trap 'track_project_dir' DEBUG
 
+# Claude Code sessions start in ~/dev/projects or below, never in the ~/dev root or a release
+# folder (they hold no work of their own; see ~/.claude/CLAUDE.md). Also covers the `cx` alias.
+claude() {
+  case "${PWD%/}" in
+    "$HOME/dev" | "$HOME/dev/releases" | "$HOME/dev/releases/"*)
+      echo "claude: refusing to start in $PWD. Use ~/dev/projects or a folder below it." >&2
+      return 1
+      ;;
+  esac
+  command claude "$@"
+}
+
 alias sshadd='ssh-add ~/.ssh/id_ed25519'
 
 # Atlas
 agent-deploy() {
-  /home/nicklas/dev/ATLAS/agent/deploy.sh
+  /home/nicklas/dev/projects/ATLAS/agent/deploy.sh
 }
 
 atlas-deploy() {
-  (cd /home/nicklas/dev/ATLAS/atlas && bash deploy.sh)
+  (cd /home/nicklas/dev/projects/ATLAS/atlas && bash deploy.sh)
 }
 
 # Load Angular CLI autocompletion.

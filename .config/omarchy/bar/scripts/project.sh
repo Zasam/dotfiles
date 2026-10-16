@@ -5,7 +5,8 @@ if [ -z "$DIR" ]; then
     exit
 fi
 
-SHORT="${DIR#/home/nicklas/dev/}"
+SHORT="${DIR#/home/nicklas/dev/projects/}"
+SHORT="${SHORT#/home/nicklas/dev/}"
 BRANCH=$(git -C "$DIR" rev-parse --abbrev-ref HEAD 2>/dev/null)
 ICON=$''
 
