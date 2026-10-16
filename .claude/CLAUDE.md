@@ -28,7 +28,7 @@ Start sessions in `~/dev/projects/` or any folder below it (e.g. a repo such as
 `~/dev/releases/` — those hold no work of their own, and sessions there leave sandbox
 leftovers (`~/dev/.claude/`, `~/dev/.mcp.json`) and a catch-all project memory. A `claude`
 function in `~/.bashrc` enforces this. Long-running programs run from
-`~/dev/releases/<repo>/<program>/current/` (ATLAS's `local-releases/deploy-release.sh`), never
+`~/dev/releases/<repo>/<program>/current/` (deployed with `deploy-release <repo> <program>`; `deploy-release --pending <repo>` lists what is behind), never
 from a working checkout.
 
 # Engineering Standards for New Projects
