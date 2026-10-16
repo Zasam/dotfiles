@@ -21,6 +21,16 @@ so troubleshooting knowledge accumulates across sessions instead of being redisc
 
 @NETWORK.md
 
+## Where Claude sessions start
+
+Start sessions in `~/dev/projects/` or any folder below it (e.g. a repo such as
+`~/dev/projects/ATLAS`). Never start one in the `~/dev` root itself or in
+`~/dev/releases/` — those hold no work of their own, and sessions there leave sandbox
+leftovers (`~/dev/.claude/`, `~/dev/.mcp.json`) and a catch-all project memory. A `claude`
+function in `~/.bashrc` enforces this. Long-running programs run from
+`~/dev/releases/<repo>/<program>/current/` (ATLAS's `local-releases/deploy-release.sh`), never
+from a working checkout.
+
 # Engineering Standards for New Projects
 
 Goal: any project should be in a state where another engineer can step in and work on it without a guided tour.
