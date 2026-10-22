@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+"""Turn the Huion WH1409's 12 express keys into LibreSprite keyboard shortcuts.
+
+Reads the tablet's raw HID button reports (the kernel's hid-uclogic driver drops the
+last two keys) and types the shortcuts through a virtual uinput keyboard. Keycodes are
+physical positions, so the bindings avoid keys that move on the German layout (Y/Z, +/-).
+
+Needs read access to the tablet's hidraw nodes. The udev rule for that is tracked at
+~/.config/huion-pad-keys/70-huion-pad.rules; install it on a new machine with
+    sudo install -m644 ~/.config/huion-pad-keys/70-huion-pad.rules /etc/udev/rules.d/
+    sudo udevadm control --reload && sudo udevadm trigger
+then: systemctl --user enable --now huion-pad-keys
+Debug log of every key press: LOG_LEVEL=DEBUG huion-pad-keys (stop the service first).
+
+Runs as the systemd user service huion-pad-keys.service.
+"""
+
+import glob
+import logging
+import os
+import select
+import time
+
+from evdev import UInput, ecodes as e
+
+HID_ID = "0000256C:0000006E"
+BUTTON_REPORT = b"\xf7\xe0"  # report id + "frame buttons" marker; bitmap in bytes 4-5
+
+# Key number -> keys pressed together. Numbering: section 1 top-left, top-right,
+# bottom-left, bottom-right, then sections 2 and 3 the same way.
+TAP = {
+    1: [e.KEY_LEFTCTRL, e.KEY_U],  # Undo (Ctrl+U; Ctrl+Z would be Ctrl+Y on QWERTZ)
+    2: [e.KEY_LEFTCTRL, e.KEY_R],  # Redo
+    3: [e.KEY_B],  # Pencil
+    4: [e.KEY_E],  # Eraser
+    5: [e.KEY_I],  # Eyedropper
+    6: [e.KEY_G],  # Paint bucket
+    7: [e.KEY_U],  # Rectangle (again: filled rectangle)
+    8: [e.KEY_LEFTSHIFT, e.KEY_U],  # Ellipse (again: filled ellipse)
+    9: [e.KEY_L],  # Line
+    10: [e.KEY_M],  # Rectangular selection
+    11: [e.KEY_X],  # Swap foreground/background color
+}
+# Held for as long as the express key is held.
+HOLD = {
+    12: [e.KEY_SPACE],  # Hand: pan the canvas while held
+}
+
+
+def find_hidraw_nodes():
+    nodes = []
+    for sysdir in glob.glob("/sys/class/hidraw/hidraw*"):
+        try:
+            with open(os.path.join(sysdir, "device/uevent")) as f:
+                if HID_ID in f.read().upper():
+                    nodes.append("/dev/" + os.path.basename(sysdir))
+        except OSError:
+            continue
+    return nodes
+
+
+def press(ui, keys, value):
+    for key in keys if value else reversed(keys):
+        ui.write(e.EV_KEY, key, value)
+    ui.syn()
+
+
+def handle_buttons(ui, pressed, previous):
+    for bit in range(12):
+        mask = 1 << bit
+        if (pressed ^ previous) & mask == 0:
+            continue
+        number, down = bit + 1, bool(pressed & mask)
+        logging.debug("key %d %s", number, "down" if down else "up")
+        if number in HOLD:
+            press(ui, HOLD[number], int(down))
+        elif number in TAP and down:
+            press(ui, TAP[number], 1)
+            press(ui, TAP[number], 0)
+
+
+def run(ui):
+    while True:
+        nodes = find_hidraw_nodes()
+        if not nodes:
+            time.sleep(2)
+            continue
+        fds = [os.open(node, os.O_RDONLY | os.O_NONBLOCK) for node in nodes]
+        logging.info("reading %s", ", ".join(nodes))
+        previous = 0
+        try:
+            while True:
+                ready, _, _ = select.select(fds, [], [])
+                for fd in ready:
+                    report = os.read(fd, 64)
+                    if report[:2] != BUTTON_REPORT or len(report) < 6:
+                        continue
+                    pressed = int.from_bytes(report[4:6], "little")
+                    handle_buttons(ui, pressed, previous)
+                    previous = pressed
+        except OSError as err:  # tablet unplugged: release held keys, wait for it again
+            logging.info("tablet gone (%s), waiting", err)
+            handle_buttons(ui, 0, previous)
+        finally:
+            for fd in fds:
+                os.close(fd)
+
+
+def main():
+    logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"), format="%(levelname)s %(message)s")
+    keys = {key for combo in [*TAP.values(), *HOLD.values()] for key in combo}
+    with UInput({e.EV_KEY: sorted(keys)}, name="huion-pad-keys") as ui:
+        run(ui)
+
+
+if __name__ == "__main__":
+    main()

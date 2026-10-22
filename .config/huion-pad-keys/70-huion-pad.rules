@@ -1,0 +1,5 @@
+# Huion WH1409 (256c:006e): let the logged-in user read its input and raw HID devices,
+# so ~/.local/bin/huion-pad-keys can turn the express keys into keyboard shortcuts.
+# hidraw is needed for the last two keys, which the kernel's hid-uclogic driver drops.
+SUBSYSTEM=="input", ATTRS{idVendor}=="256c", ATTRS{idProduct}=="006e", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="256c", ATTRS{idProduct}=="006e", TAG+="uaccess"

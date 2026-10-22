@@ -55,3 +55,16 @@
 -- Enable touchpad gestures for moving focus (helpful on scrolling layout).
 -- hl.gesture({ fingers = 3, direction = "left", action = function() hl.dispatch(hl.dsp.focus({ direction = "l" })) end })
 -- hl.gesture({ fingers = 3, direction = "right", action = function() hl.dispatch(hl.dsp.focus({ direction = "r" })) end })
+
+-- Huion tablet (256c:006e, 350.52x219.08mm, 16:10): map it to the 16:9 main monitor only.
+-- The active area is cropped to 16:9 (350.52 x 197.17mm, centred vertically) so circles
+-- drawn on the tablet stay round on screen instead of being squashed.
+hl.config({
+  input = {
+    tablet = {
+      output = "DP-1",
+      active_area_size = "350.52 197.17",
+      active_area_position = "0 10.95",
+    },
+  },
+})

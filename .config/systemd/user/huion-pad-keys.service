@@ -1,0 +1,12 @@
+[Unit]
+Description=Huion tablet express keys -> LibreSprite shortcuts
+After=graphical-session.target
+BindsTo=graphical-session.target
+
+[Service]
+ExecStart=%h/.local/bin/huion-pad-keys
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target
