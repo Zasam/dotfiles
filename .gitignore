@@ -14,3 +14,7 @@ pkg/
 src/
 
 .bashrc.local
+
+# Private notes, synced via Nextcloud instead (see .claude/CLAUDE.md)
+.claude/NETWORK.md
+.claude/TODO.md

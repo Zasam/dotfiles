@@ -6,6 +6,13 @@ not coding standards, and grows independently:
 
 @PREFERENCES.md
 
+## Private notes (synced via Nextcloud, not dotfiles)
+
+`TODO.md` and `NETWORK.md` below are symlinks into `~/Nextcloud/claude/`, so they sync to
+every device with the Nextcloud client but never reach the public dotfiles repo (they hold
+home-network details and open security to-dos). Edit them in place; never add them back
+to dotfiles. On a new machine: `ln -s ~/Nextcloud/claude/{TODO,NETWORK}.md ~/.claude/`.
+
 ## Global To-Dos
 
 Cross-project/machine-setup items left over from a session — not tied to any one repo —
@@ -47,6 +54,10 @@ Keep current: what the project does, setup from a clean machine, how to run it a
 Test core logic and bug fixes where practical (no hard coverage target). A change isn't done until its tests pass. Bug fixes ship with a regression test.
 
 ## 4. Git & Versioning
+- **No Claude attribution anywhere in git/GitHub.** Commit messages get no
+  `Co-Authored-By: Claude …` trailer, and PR titles/descriptions/comments get no
+  "Generated with Claude Code" line or any other mention of Claude. This overrides the
+  harness's default attribution reminder.
 - Small, atomic commits explaining why, not just what.
 - Never commit secrets — use gitignored `.env` + a committed `.env.example` (keys, no values).
 - Once a project has real users/releases: maintain CHANGELOG.md and semver (MAJOR.MINOR.PATCH) tags.
