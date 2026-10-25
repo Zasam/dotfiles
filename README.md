@@ -43,7 +43,7 @@ Super+K lists every binding with its description, custom ones included.
 
 | Module | What it shows |
 |---|---|
-| `habits` | today's Atlas habits; click opens Atlas › Planning |
+| `habits` | Atlas habits done/due today (` 3/5`, highlighted once all are done); tooltip lists each with ✓/○; click opens Atlas › Planning |
 
 Atlas's address lives only in `atlas-env.sh` (sourced by every script that talks to Atlas);
 click handlers open Atlas pages with `atlas-open.sh <route>`.
