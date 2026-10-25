@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Opens the laptop's running Hyprland session in VNC viewers, LAN-only over an SSH tunnel:
+# one wayvnc per monitor (wayvnc serves a single output), each in its own viewer window.
+# wayvnc listens only on the laptop's localhost; everything stops once the last viewer closes.
+# Usage: laptop-desktop [output...]   (default: every connected monitor, e.g. eDP-2 HDMI-A-1)
+set -euo pipefail
+
+host=omarchy-predator
+first_port=5900
+max_outputs=4
+
+# Runs on the laptop: start one wayvnc per output on consecutive ports, report each when listening.
+remote=$(cat <<'EOF'
+export XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-1
+if [ -z "$outputs" ]; then
+  export HYPRLAND_INSTANCE_SIGNATURE=$(ls -t "$XDG_RUNTIME_DIR/hypr" | head -1)
+  outputs=$(hyprctl monitors | awk '/^Monitor/ {print $2}')
+fi
+pids=()
+trap 'kill "${pids[@]}" 2>/dev/null' HUP EXIT
+port=$first_port
+for output in $outputs; do
+  if [ $((port - first_port)) -ge "$max_outputs" ]; then echo "more than $max_outputs outputs, skipping $output"; break; fi
+  wayvnc -o "$output" -S "$XDG_RUNTIME_DIR/wayvncctl-$output" 127.0.0.1 "$port" & pids+=($!)
+  until ss -tln | grep -q "127.0.0.1:$port "; do kill -0 "$!" 2>/dev/null || exit 1; sleep 0.2; done
+  echo "wayvnc-ready $port $output"
+  port=$((port + 1))
+done
+echo wayvnc-all-ready
+wait
+EOF
+)
+
+forwards=()
+for ((port = first_port; port < first_port + max_outputs; port++)); do
+  forwards+=(-L "$port:127.0.0.1:$port")
+done
+
+# -tt gives the remote shell a pty, so the wayvnc instances get SIGHUP when the tunnel closes.
+# exec, so the coproc PID is ssh itself and the EXIT trap really closes the tunnel.
+coproc tunnel {
+  exec ssh -tt -o ExitOnForwardFailure=yes "${forwards[@]}" "$host" \
+    "outputs='$*' first_port=$first_port max_outputs=$max_outputs; $remote" 2>&1
+}
+tunnel_pid=$tunnel_PID # bash unsets tunnel_PID once the coproc exits
+exec 3<&"${tunnel[0]}" # coproc fds aren't inherited by background jobs; a duplicate is
+trap 'kill "$tunnel_pid" 2>/dev/null' EXIT
+
+ports=()
+ready=false
+while read -r line <&3; do
+  line=${line%$'\r'}
+  case $line in
+    "wayvnc-ready "*) read -r _ port output <<<"$line"; ports+=("$port"); echo "$output → port $port" ;;
+    wayvnc-all-ready) ready=true; break ;;
+    *) echo "$line" >&2 ;;
+  esac
+done
+$ready && ((${#ports[@]})) || { echo "laptop-desktop: wayvnc did not start on $host" >&2; exit 1; }
+
+# Keep draining the remote output so wayvnc never blocks on a full pipe.
+cat <&3 >&2 &
+
+viewers=()
+for port in "${ports[@]}"; do
+  # RemoteResize=0: wayvnc can't resize a physical monitor, so don't ask it to.
+  vncviewer -RemoteResize=0 "127.0.0.1::$port" &
+  viewers+=($!)
+done
+wait "${viewers[@]}"
