@@ -43,7 +43,10 @@ Super+K lists every binding with its description, custom ones included.
 
 | Module | What it shows |
 |---|---|
-| `habits` | today's Atlas habits (`atlas-env.sh` holds Atlas's address for all Atlas modules) |
+| `habits` | today's Atlas habits; click opens Atlas › Planning |
+
+Atlas's address lives only in `atlas-env.sh` (sourced by every script that talks to Atlas);
+click handlers open Atlas pages with `atlas-open.sh <route>`.
 | `servers` | reachability of the home services; click opens a picker |
 | `project` | the last shell's project dir + git branch; click opens a terminal there |
 | `pomodoro` | 25/5/15 Pomodoro timer; click toggles, `pomodoro-reset.sh` resets |

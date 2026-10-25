@@ -59,7 +59,7 @@
           "type": "command",
           "exec": "~/.config/omarchy/bar/scripts/screentime.sh",
           "interval": 30,
-          "onClick": "xdg-open http://192.168.178.40:3000/#screentime/day 2>/dev/null || true",
+          "onClick": "~/.config/omarchy/bar/scripts/atlas-open.sh screentime/day",
           "tooltip": "Screen time today"
         },
         {
@@ -67,7 +67,7 @@
           "type": "command",
           "exec": "~/.config/omarchy/bar/scripts/habits.sh",
           "interval": 30,
-          "onClick": "xdg-open http://192.168.178.40:3000/#planning 2>/dev/null || true",
+          "onClick": "~/.config/omarchy/bar/scripts/atlas-open.sh planning",
           "tooltip": "Habits due today"
         },
         {

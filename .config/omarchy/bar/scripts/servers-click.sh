@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=atlas-env.sh
+source "$SCRIPT_DIR/atlas-env.sh"
 CACHE="$HOME/.cache/omarchy-servers"
 
 # If no cache yet, fall back to static list
@@ -9,7 +12,7 @@ if [ ! -f "$CACHE" ]; then
         "Nextcloud|up|0|http://192.168.178.40:8080"
         "SEQ|up|0|http://212.227.31.20:5341"
         "Pi-hole|up|0|http://192.168.178.41"
-        "Atlas|up|0|http://192.168.178.40:3000"
+        "Atlas|up|0|$ATLAS_URL"
     )
     for e in "${entries[@]}"; do
         echo "$e" >> "$CACHE"
