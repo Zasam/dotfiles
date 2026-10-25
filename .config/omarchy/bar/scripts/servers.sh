@@ -1,16 +1,7 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=atlas-env.sh
-source "$SCRIPT_DIR/atlas-env.sh"
-
-NAMES=("Home Assistant" "Immich"                 "Nextcloud"              "SEQ"                   "Pi-hole"              "Atlas")
-HOSTS=("RPI5"           "RPI5"                   "RPI5"                   "VPS"                   "RPI3"                 "RPI5")
-URLS=( "http://192.168.178.40:8123"
-       "http://192.168.178.40:2283"
-       "http://192.168.178.40:8080"
-       "http://212.227.31.20:5341"
-       "http://192.168.178.41"
-       "$ATLAS_URL" )
+# shellcheck source=servers-list.sh
+source "$SCRIPT_DIR/servers-list.sh"
 
 CACHE="$HOME/.cache/omarchy-servers"
 TMPDIR=$(mktemp -d)

@@ -47,7 +47,7 @@ Super+K lists every binding with its description, custom ones included.
 
 Atlas's address lives only in `atlas-env.sh` (sourced by every script that talks to Atlas);
 click handlers open Atlas pages with `atlas-open.sh <route>`.
-| `servers` | reachability of the home services; click opens a picker |
+| `servers` | reachability of the home services (listed in `servers-list.sh`); click opens a picker |
 | `project` | the last shell's project dir + git branch; click opens a terminal there |
 | `pomodoro` | 25/5/15 Pomodoro timer; click toggles, `pomodoro-reset.sh` resets |
 | `resources` | CPU + RAM |
