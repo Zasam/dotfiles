@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Laptop Desktop
+Comment=Open omarchy-predator's Hyprland session in VNC windows (LAN, SSH tunnel)
+Exec=sh -c "systemd-cat -t laptop-desktop /home/nicklas/.local/bin/laptop-desktop || notify-send -u critical 'Laptop Desktop' 'Could not open the laptop session. Details: journalctl -t laptop-desktop'"
+Icon=preferences-desktop-remote-desktop
+Terminal=false
+Categories=Network;RemoteAccess;
+Keywords=vnc;remote;predator;laptop;
