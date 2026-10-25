@@ -49,7 +49,7 @@ Super+K lists every binding with its description, custom ones included.
 | `pomodoro` | 25/5/15 Pomodoro timer; click toggles, `pomodoro-reset.sh` resets |
 | `resources` | CPU + RAM |
 | `kdeconnect` | paired phone's reachability + battery |
-| `focus-now`, `focus-usage`, `focus-lock` | stale: read Atlas's old Focus API, removed in Atlas 0.148.1 (now Screen time) |
+| `screentime` | today's active screen time from Atlas; tooltip: right now, vs. 7-day average, categories, top apps/sites; click opens Atlas › Screen time |
 
 ## Launcher entries (`.local/share/applications/`)
 

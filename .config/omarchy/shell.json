@@ -55,25 +55,11 @@
           "id": "omarchy.agents"
         },
         {
-          "id": "focus-lock",
+          "id": "screentime",
           "type": "command",
-          "exec": "~/.config/omarchy/bar/scripts/focus-lock.sh",
-          "interval": 15,
-          "onClick": "xdg-open http://192.168.178.40:3000/#focus 2>/dev/null || true",
-          "tooltip": "Focus blocks"
-        },
-        {
-          "id": "focus-now",
-          "type": "command",
-          "exec": "~/.config/omarchy/bar/scripts/focus-now.sh",
-          "interval": 10,
-          "tooltip": "Currently focused"
-        },
-        {
-          "id": "focus-usage",
-          "type": "command",
-          "exec": "~/.config/omarchy/bar/scripts/focus-usage.sh",
+          "exec": "~/.config/omarchy/bar/scripts/screentime.sh",
           "interval": 30,
+          "onClick": "xdg-open http://192.168.178.40:3000/#screentime/day 2>/dev/null || true",
           "tooltip": "Screen time today"
         },
         {
