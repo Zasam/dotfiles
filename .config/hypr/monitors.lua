@@ -21,9 +21,10 @@ hl.monitor({ output = "", mode = "preferred", position = "auto", scale = omarchy
 -- 1.5x brings it to ~93 PPI, close to a normal desktop density. Logical
 -- size becomes 3840/1.5 x 2160/1.5 = 2560x1440 — other monitors position
 -- against that logical size, not the raw 3840x2160 pixels.
--- 60Hz, not 144: 4K@144 went to "No signal" on 2026-09-28 and 120Hz flickered
--- (DP link at its bandwidth limit). Try higher again with a certified DP 1.4 cable.
-hl.monitor({ output = "DP-1", mode = "3840x2160@60", position = "0x0", scale = 1.5 })
+-- 144Hz: went to "No signal" on 2026-09-28 (120Hz flickered, DP link at its
+-- bandwidth limit) and ran at 60 until it worked again on 2026-10-25 with no
+-- hardware change — intermittent. If "No signal" returns, fall back to @60.
+hl.monitor({ output = "DP-1", mode = "3840x2160@144", position = "0x0", scale = 1.5 })
 -- Secondary: Samsung C27F390, to the right of the AOC (logical width 2560px
 -- at the AOC's 1.5x scale). Bottom-aligned with the AOC (1440 - 1080 = 360)
 -- so the mouse can cross from the bottom of the main monitor onto the Samsung.
